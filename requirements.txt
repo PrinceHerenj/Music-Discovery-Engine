@@ -1,7 +1,14 @@
-numpy
-pandas
-pyarrow
-sentence_transformers
-vaderSentiment
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch
+sentence-transformers
 fastapi
-uvicorn
+uvicorn[standard]
+gunicorn
+pandas
+numpy
+scikit-learn
+vaderSentiment
+pyarrow
+pytest
+httpx

@@ -4,8 +4,9 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 from sentence_transformers import SentenceTransformer
 
-df = pd.read_parquet('./songs_with_mood.parquet')
-embeddings = np.load('./embeddings.npy')
+keep_cols = ["title", "artist", "mood", "year"]
+df = pd.read_parquet("songs_with_mood.parquet", columns=keep_cols)
+embeddings = np.load('./embeddings.npy', mmap_mode="r")
 model = SentenceTransformer('all-MiniLM-L6-v2')
 from sklearn.metrics.pairwise import cosine_similarity
 
