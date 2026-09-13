@@ -10,5 +10,7 @@ numpy
 scikit-learn
 vaderSentiment
 pyarrow
-pytest
-httpx
+langchain
+langchain-core
+langchain-ollama
+locust
