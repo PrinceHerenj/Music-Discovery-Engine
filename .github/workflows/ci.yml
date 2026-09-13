@@ -100,4 +100,4 @@ jobs:
       - name: Run Locust load test
         run: |
           locust -f locustfile.py --host http://localhost:8000 \
-            --headless -u 10 -r 2 --run-time 30s
+            --headless -u 10 -r 2 --run-time 30s --tags recommend

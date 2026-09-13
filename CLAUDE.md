@@ -18,6 +18,8 @@ NLP music recommendation API. Songs are embedded with `all-MiniLM-L6-v2` (384-D)
   ```bash
   locust -f locustfile.py --host http://localhost:8000            # web UI at http://localhost:8089
   locust -f locustfile.py --host http://localhost:8000 --headless -u 10 -r 2 --run-time 30s
+  # target a single endpoint via its @tag ("recommend" or "ask"):
+  locust -f locustfile.py --host http://localhost:8000 --headless -u 10 -r 2 --run-time 30s --tags recommend
   ```
 - **Generate data**: run `notebook.ipynb` to (re)produce `songs_with_mood.parquet` and `embeddings.npy` (both gitignored).
 - No pytest suite is present; CI (`.github/workflows/ci.yml`) builds/pushes a Docker image and runs the Locust load test.
@@ -46,4 +48,4 @@ Two runtime modules plus a notebook pipeline:
 - **Data files are not committed** (`*.npy`, `*.parquet` gitignored) and must exist locally for the API to import — `api.py`/`recommendation_engine.py` crash on startup if `embeddings.npy` or `songs_with_mood.parquet` is absent. CI downloads them from the `v0.1.0-data` GitHub release before building.
 - **Model loads at import time**, so every cold start re-downloads `all-MiniLM-L6-v2`; the single long-lived Render web-service container (one gunicorn worker) exists for this reason over serverless.
 - **`/ask` depends on a running local Ollama server** with `llama3.2:3b` pulled (`ollama pull llama3.2:3b`). It is ~3–4 s per request on CPU; the README "<100ms" claim applies to `/recommend` only (~90 ms). The Locust load test's `/ask` task will fail without Ollama provisioned.
-- The `songs_with_mood.parquet` and `embeddings.npy` files tracked in git bloated `.git` to ~2 GB; a plan to `git rm --cached` them and rewrite history was drafted but not fully executed.
+- The `songs_with_mood.parquet` and `embeddings.npy` files are **not** tracked in git — they were once committed (bloating `.git` to ~2 GB) but have since been `git rm --cached`'d and history rewritten, so `.git` is now ~95 MB.

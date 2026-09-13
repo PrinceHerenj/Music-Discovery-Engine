@@ -1,10 +1,11 @@
-from locust import HttpUser, task, between
+from locust import HttpUser, task, between, tag
 
 
 class MusicRecommendUser(HttpUser):
     wait_time = between(1, 3)
 
     @task(3)
+    @tag("recommend")
     def recommend(self):
         self.client.post(
             "/recommend",
@@ -12,6 +13,7 @@ class MusicRecommendUser(HttpUser):
         )
 
     @task(1)
+    @tag("ask")
     def ask(self):
         self.client.post(
             "/ask",
